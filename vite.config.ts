@@ -1,16 +1,18 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 
 import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
   plugins: [react()],
   define: {
-    'process.env': {}, // Mock the `process.env` object
+    'process.env.NODE_ENV': JSON.stringify(
+      process.env.NODE_ENV || 'development'
+    ),
   },
   resolve: {
     alias: {
-      // Add this line to resolve process
-      process: 'process/browser',
+      process: path.resolve(__dirname, 'node_modules/process/browser'), // Polyfill the process object
     },
   },
   build: {
